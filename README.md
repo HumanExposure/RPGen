@@ -17,5 +17,8 @@ This version of RPGen includes a .SAS file to process manually downloaded AHS, R
 
 RPGen utilizes tools from the R package httk to link physiological parameters to sampled individuals. However, it no longer requires httkpop.tar.gz datafile, as the httk package is freely avaialble from CRAN. 
 
-RPG was originally written by GG at ICF. This version includes information submitted to EPA in August 2019. 
-Additional updates to RPGen are forthcoming, including an automatic download function and process function.  
+RPG was originally written by GG at ICF, and titled the PopulationHousingGenerator. Code for this version is stored in a GitHub repository of the same name at https://github.com/HumanExposure/PopulationHousingGenerator
+RPGen includes the majority of elements from the original repository, with updates submitted to EPA in August 2019 from ICF. Please see the PopulationHousingGenerator
+for a full history of RPGen. 
+
+Additional updates to RPGen are forthcoming, including an automatic download function and process function. 

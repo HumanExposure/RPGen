@@ -113,11 +113,13 @@ gen.pop = function(pums) {
 #' @param   q a numeric vector
 #' @return  a numeric vector with the interval between p and q.   
 
-sampleq = function(p,q){
+
+sampleq = function(x,p,q) {
   cp.x <- cumul.prob(p)
   sel.x <- 1+findInterval(q,cp.x)
   return(sel.x)
 }
+
 
 #' bi_norm_cor
 #' 

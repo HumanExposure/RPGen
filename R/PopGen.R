@@ -2,13 +2,13 @@
 # Designed and written by WGG at ICF, July 18, 2019
 # Updated by AE of ORAU, 2020.
 
-# __________ RANDOMIZATION AND SORTING __________: #
+# Randomization and Sorting:
 
 #' Splits a character into a vector of character values of length two.
 #' 
 #' @param   str a character
 #' @return  a character vector with length two
-  
+
 splitpairs = function(str) {
   n <- str_length(str)/2
   x <- substr(str,1,2)
@@ -113,20 +113,21 @@ gen.pop = function(pums) {
 #' @param   q a numeric vector
 #' @return  a numeric vector with the interval between p and q.   
 
-
-sampleq = function(x,p,q) {
+sampleq = function(p,q){
   cp.x <- cumul.prob(p)
   sel.x <- 1+findInterval(q,cp.x)
   return(sel.x)
 }
 
-
-#' bi_norm_cor
+#' Creates variation. 
 #' 
-#' DD<-------------
-#' 
-#' @param   q 
-#' @return  a binormal distributon
+#' @param   q a dataframe
+#' @param   px a vector with values 0 and 1
+#' @param   py a vector with values 0 and 1
+#' @param   rho zero, unless changed by sigma and px,py
+#' @param   means the first observation in the vector is px, and second py
+#' @param   sigma used to create variation in equation below
+#' @return  a vector of cumulative densities
 
 bi_norm_cor = function(q,px=c(0,1),py=c(0,1),rho=0,means=c(0,0),sigma=NULL) {
   if (!is.null(sigma)) {
@@ -185,7 +186,7 @@ adjust_weight = function(y) {
 }
 
 
-# __________ FILE READING __________: #
+# File reading:
 
 #' Reads and stores user input
 #' 
@@ -273,10 +274,10 @@ read.console = function() {
   if (length(rg3) == 0 ){
     st3 <- c(st3,allstates$FIPS)
   } else {
-  if (str_detect(rg3,"1"))  st3 <- c(st3,allstates$FIPS[allstates$region=="1"])
-  if (str_detect(rg3,"2"))  st3 <- c(st3,allstates$FIPS[allstates$region=="2"])
-  if (str_detect(rg3,"3"))  st3 <- c(st3,allstates$FIPS[allstates$region=="3"])    
-  if (str_detect(rg3,"4"))  st3 <- c(st3,allstates$FIPS[allstates$region=="4"])
+    if (str_detect(rg3,"1"))  st3 <- c(st3,allstates$FIPS[allstates$region=="1"])
+    if (str_detect(rg3,"2"))  st3 <- c(st3,allstates$FIPS[allstates$region=="2"])
+    if (str_detect(rg3,"3"))  st3 <- c(st3,allstates$FIPS[allstates$region=="3"])    
+    if (str_detect(rg3,"4"))  st3 <- c(st3,allstates$FIPS[allstates$region=="4"])
   }
   st4     <- unique(st3[order(st3)])
   states  <- st4[st4!=""]
@@ -301,7 +302,7 @@ read.console = function() {
 #' Reads and stores input from popfile .txt file 
 #' 
 #' Creates a list to apply user specifications to the datasets. 
-#' 
+#' @param   popfile the .txt input file
 #' @return  specs, a list containing the speicifcations of the user to create the population. 
 
 read.popfile = function(popfile){
@@ -430,8 +431,14 @@ read.pums = function() {
   return(pums)
 }  
 
-# __________ HTTK __________: #
-  
+# httk :
+
+#' Renames inputs in a datatable of input demographics.  
+#'
+#' @param  p a datatable with ethnicity, age, and gender
+#' @return a datatable of demograhpics
+
+
 httkvars = function(p) {
   reths <- c("Mexican American", "Other Hispanic", "Non-Hispanic White", "Non-Hispanic Black", "Other")
   q <- data.table::copy(p)
@@ -606,7 +613,7 @@ spleen_mass_children = function (height, weight, gender)
   return(sm)
 }
 
-# __________ POPGEN __________: #
+# PopGen function:
 
 #' Creates a population and matching physoloigical/toxicokinetic variables.  
 #'
@@ -641,9 +648,8 @@ popgen = function (runfile=NULL) {
   indiv_dt[, `:=` (age_years,  age)]
   indiv_dt[, `:=` (age_months, temp_age_months)]  
   indiv_dt <- adjust_weight(y = indiv_dt)
-  #indiv_dt$q.gliv <- NULL # AE: q.gliv does not exist?
+  #indiv_dt$q.gliv <- NULL 
   setnames(indiv_dt,"vehicles","cars")
   indiv_dt <- setorder(indiv_dt,num)
   return(indiv_dt)
 }
-

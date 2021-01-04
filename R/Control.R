@@ -91,4 +91,6 @@ if (length(ahspools > 0) & length(recspools > 0)){
   #rm(list = setdiff(ls(), c("pophouse","mismatchedhousing")))
 }  
 
+RPGen.run()
+
 

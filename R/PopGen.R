@@ -113,7 +113,7 @@ gen.pop = function(pums) {
 #' @param   q a numeric vector
 #' @return  a numeric vector with the interval between p and q.   
 
-sampleq = function(p,q){
+sampleq = function(x,p,q){
   cp.x <- cumul.prob(p)
   sel.x <- 1+findInterval(q,cp.x)
   return(sel.x)
@@ -450,12 +450,14 @@ httkvars = function(p) {
   nreth[p$ethnicity=="N" & p$race=="B"] <- 4
   q$reth <- as.factor(reths[nreth])
   q.months <- get.randoms("months",nrow(q),g$seeds,g$var.list,0)
+  q$age <- as.numeric(q$age)
   q$age_months <- 12*q$age+floor(12*q.months)
   q$temp_age_months <- 12*q$age+floor(12*q.months)
   q$age_years <- q$age
   q$gender[q$gender=="M"] <- "Male"
   q$gender[q$gender=="F"] <- "Female"
   q$num <- 1:nrow(q)
+  q$ages <- str_c("'",q$ages,"'")
   return(q)
 }
 
@@ -625,14 +627,14 @@ spleen_mass_children = function (height, weight, gender)
 #' @return  a data table containing the generated random population. 
 
 popgen = function (runfile=NULL) {
-  cat("\n HEM population generator module")
+  cat("\n CHEM Residential Population Generator Module (RPGen)")
   if(!is.null(runfile)) specs <- read.popfile(runfile)
   if(is.null(runfile))  specs <- read.console()
   specs$var.list <- c("pums","ahs","recs","months","nkde","hw1","hw2","norm",
                       "logn","flow","adip","gliv","hema","rfun1","rfun2")
   specs$seeds    <- get.seeds(specs$run.seed,length(specs$var.list))
   g       <<- specs
-  cat("Saved run settings\n")
+  cat(" Run settings saved. Running RPGen.\n")
   pums1    <- read.pums()
   sel.pop  <- gen.pop(pums1)
   pop0     <- pums1[(sel.pop),]

@@ -211,7 +211,7 @@ famcats.to.compid.all<- function(z){
     x$genders <- paste(x$gender, collapse = "")
     
     #  ages
-    x$ages <- paste(x$age, collapse = "")
+    x$ages <- paste(sprintf("%02d",x$age), collapse = "")
     
     return(x)
   }
@@ -235,15 +235,20 @@ pums<- pums %>% select(c("pool","compid","recno","gender","race","ethnicity","ag
    "commute","vehicles","region"))
 
 
+# 10. Ensure 'ages' is a character string and force leading zero onto age. 
+
+pums$ages<- as.character(pums$ages)
+pums$age <- sprintf("%02d",pums$age)
+
 # ______________ Export  _____________________________________________________ #
 
-# 10. Split by region, and remove region.
+# 11. Split by region, and remove region.
 
 pums<-dlply(pums, "region")
 pums<-lapply(pums, function(x) x %>% select(-region))
 names(pums)<-c("region1","region2","region3","region4")
 
-# 11. Write files. 
+# 12. Write files. 
 
 list2env(pums,globalenv())
 rm(pums)
@@ -262,3 +267,6 @@ return(writeLines(runtime))
 }
 
 RPGen.PUMS(people,housing)
+
+
+  
